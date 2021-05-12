@@ -2,7 +2,7 @@
 #define RedLed 11
 #define GreenLed 10
 #define YellowLed 9
-#define NoLed 50
+const int NoLed;
 
 #define joyX A5
 #define joyY A6
@@ -11,7 +11,7 @@
 int i;
 int k;
 int leds[Arr_size]=      {RedLed,   GreenLed,  NoLed,  BlueLed, YellowLed};
-bool isLedOff[Arr_size] = {true,    true,    true,   true,    true};
+bool isLedOff[Arr_size] = {true,     true,     true,    true,     true};
 bool isJoyValGood = false;
 
 int roundCnt = 0;
@@ -22,15 +22,17 @@ int turnOffLowVal = 10;
 void setup() {
   Serial.begin(9600);
   for(int j = 0 ; j < Arr_size ; j++){ 
-    pinMode(leds[j], OUTPUT);
-    digitalWrite(leds[j], LOW);
+    if(j != 2){
+      pinMode(leds[j], OUTPUT);
+      digitalWrite(leds[j], LOW);
+    }
   }
 }
 
 void loop() {
   while(roundCnt < maxRound){
     randomSeed(analogRead(A1));
-    i = random(0, 3);
+    i = random(3);
     if(i == 2){
       k = random(3, 5);
     }else{
@@ -61,15 +63,14 @@ bool checkXFun(){
     isJoyValGood = true;
   }else if(!isLedOff[1] && valX < turnOffLowVal){
     isJoyValGood = true;
-  }else  if(i == 2){
+  }else  if(i == 2){      //random i is on NoLed
     isJoyValGood = true;;
   }
   
   if(isJoyValGood){
     digitalWrite(leds[i], LOW);
-    isLedOff[i] = true;
+    return isLedOff[i] = true;
   }
-  isJoyValGood = false;
 }
 
 bool checkYFun(){
@@ -81,13 +82,12 @@ bool checkYFun(){
     isJoyValGood = true;
   }else if(!isLedOff[4] && valY < turnOffLowVal){
     isJoyValGood = true;
-  }else if(k == 2){
+  }else if(k == 2){       //random k is on NoLed
     isJoyValGood = true;
   }
   
   if(isJoyValGood){
     digitalWrite(leds[k], LOW);
-    isLedOff[k] = true;
+    return isLedOff[k] = true;
   }
-  isJoyValGood = false;
 }
