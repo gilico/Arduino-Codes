@@ -23,7 +23,7 @@ void loop() {
   if(analogRead(potzPin) > 400){
     analogWrite(GreenLed, LedValFun());
     
-    if(LedValFun() > 0 && ledVal == 0) interval = AddToInterval();
+    if(LedValFun() > 0 && ledVal == 0) interval = millis() + 5000;;
     interval = AddToInterval();
   
     if(millis() >= interval || digitalRead(RedBtn) == LOW){
